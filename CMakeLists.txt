@@ -100,6 +100,9 @@ elseif(WIN32)
 
     # Visual Studio のスタートアッププロジェクトとして設定
     set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+    
+    # Visual Studio 内で実行したときの作業ディレクトリを設定 (テクスチャ読み込みのため)
+    set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 else()
     # Ubuntu Linux (その他UNIX系) の設定
