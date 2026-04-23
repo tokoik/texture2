@@ -8,8 +8,9 @@
 
 今回は通常のテクスチャマッピングとは少し異なり、スライドプロジェクターやスポットライトで物体に画像を投影するようにマッピングする、**テクスチャ投影 (Projective Texture Mapping)** という手法を実装します。プログラムを実行すると、テクスチャが立方体に投影されながらアニメーションする様子を観察できます。
 
-<img src="texture2.gif" style="display: block; margin: 0 auto;"
-width="256" height="256" alt="投影マッピング" />
+<div style="text-align: center;">
+<img src="texture2.gif" width="256" height="256" alt="投影マッピング" />
+</div>
 
 ## 2. ビルド方法
 
