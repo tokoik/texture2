@@ -22,6 +22,7 @@
 mkdir build
 cd build
 cmake .. -G "Visual Studio 17 2022"
+```
 
 3. 生成された build フォルダ内の texture2.sln を Visual Studio で開きます。
 
