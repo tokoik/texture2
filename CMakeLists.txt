@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(texture2 LANGUAGES C CXX)
+project(texture2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,7 +25,6 @@ set(TEXTURE_FILES
 if(APPLE)
     # macOS の設定
     set(ICON_FILE "opengl.icns")
-    set(PLIST_FILE "Info.plist")
 
     # アプリケーションバンドルとして実行ファイルを作成
     add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${TEXTURE_FILES} ${ICON_FILE})
@@ -36,20 +35,31 @@ if(APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
 
     # アプリケーションバンドルの作成設定
-    # 既存の Info.plist を使用し、起動対象(Scheme)を設定
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/${PLIST_FILE}"
+        # アプリケーションバンドルとしてビルド
+        MACOSX_BUNDLE TRUE
+
+        # Info.plist に書き込む内容
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.yourcompany.${PROJECT_NAME}"
         MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.example.${PROJECT_NAME}"
-        MACOSX_BUNDLE_ICON_FILE "opengl.icns"
+        MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+        MACOSX_BUNDLE_ICON_FILE "${ICON_FILE}"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2026 Kohe Tokoi. All rights reserved."
+
+        # Xcode のスキーム生成
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.yourcompany.${PROJECT_NAME}"
         XCODE_GENERATE_SCHEME ON
     )
 
-    # tire.raw, light.raw などをアプリケーションバンドル内の Resources に組み込む
+    # リソースの配置設定
+    set_source_files_properties(${TEXTURE_FILES} ${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    # テクスチャファイルなどをアプリケーションバンドル内の Resources に組み込む
     set_source_files_properties(${TEXTURE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
-    # Xcode 上で Run したときに texture2.app が起動 (スタートアッププロジェクト化)
+    # Xcode 上で Run したときに起動するようにアプリケーションバンドルをスタートアッププロジェクトにする
     set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY XCODE_GENERATE_SCHEME ON)
 
 elseif(WIN32)
@@ -90,7 +100,7 @@ elseif(WIN32)
     target_link_libraries(${PROJECT_NAME} PRIVATE freeglut_static OpenGL::GL)
     target_compile_definitions(${PROJECT_NAME} PRIVATE FREEGLUT_STATIC)
 
-    # ビルド後にテクスチャファイルを実行ファイルと同じ階層にコピー (起動時に読み込めるようにする)
+    # 起動時に読み込めるようにビルド後にテクスチャファイルを実行ファイルと同じ階層にコピーする
     foreach(TEX_FILE IN LISTS TEXTURE_FILES)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -100,9 +110,9 @@ elseif(WIN32)
 
     # Visual Studio のスタートアッププロジェクトとして設定
     set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
-    
-    # Visual Studio 内で実行したときの作業ディレクトリを設定 (テクスチャ読み込みのため)
-    set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+    # Visual Studio で実行する際の作業ディレクトリを実行ファイルと同階層にする
+    set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 
 else()
     # Ubuntu Linux (その他UNIX系) の設定
@@ -110,7 +120,7 @@ else()
 
     # pkg-config を利用
     find_package(PkgConfig REQUIRED)
-    
+
     # freeglut (glut) と gl の設定を取得
     pkg_search_module(GLUT REQUIRED glut freeglut)
     pkg_search_module(GL REQUIRED gl)
@@ -126,11 +136,11 @@ else()
         target_link_options(${PROJECT_NAME} PRIVATE ${GL_LDFLAGS})
         target_link_libraries(${PROJECT_NAME} PRIVATE ${GL_LIBRARIES})
     endif()
-    
+
     # 標準数学ライブラリ
     target_link_libraries(${PROJECT_NAME} PRIVATE m)
 
-    # ビルド後にテクスチャファイルを実行ファイルと同じ階層にコピー (起動時に読み込めるようにする)
+    # 起動時に読み込めるようにビルド後にテクスチャファイルを実行ファイルと同じ階層にコピーする
     foreach(TEX_FILE IN LISTS TEXTURE_FILES)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different

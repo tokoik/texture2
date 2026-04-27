@@ -24,9 +24,9 @@ static const GLfloat lightamb[] = { 0.1f, 0.1f, 0.1f, 1.0f }; /* 環境光強度
 /*
 ** テクスチャ
 */
-#define TEXWIDTH  256                               /* テクスチャの幅　　　 */
-#define TEXHEIGHT 256                               /* テクスチャの高さ　　 */
-static const char texture1[] = "tire.raw";          /* テクスチャファイル名 */
+#define TEXWIDTH  256                                 /* テクスチャの幅　　　 */
+#define TEXHEIGHT 256                                 /* テクスチャの高さ　　 */
+static const char texture1[] = "tire.raw";            /* テクスチャファイル名 */
 
 /*
 ** 初期化
@@ -116,9 +116,9 @@ static void scene(void)
 }
 
 
-/****************************
+/*************************
 ** GLUT のコールバック関数 **
-****************************/
+*************************/
 
 /* トラックボール処理用関数の宣言 */
 #include "trackball.h"
