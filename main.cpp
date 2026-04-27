@@ -1,4 +1,5 @@
 ﻿#if defined(__APPLE__) || defined(MACOSX)
+#  define GL_SILENCE_DEPRECATION
 #  include <GLUT/glut.h>
 #else
 #  if defined(_WIN32)
@@ -24,9 +25,9 @@ static const GLfloat lightamb[] = { 0.1f, 0.1f, 0.1f, 1.0f }; /* 環境光強度
 /*
 ** テクスチャ
 */
-#define TEXWIDTH  256                                 /* テクスチャの幅　　　 */
-#define TEXHEIGHT 256                                 /* テクスチャの高さ　　 */
-static const char texture1[] = "tire.raw";            /* テクスチャファイル名 */
+#define TEXWIDTH  256                               /* テクスチャの幅　　　 */
+#define TEXHEIGHT 256                               /* テクスチャの高さ　　 */
+static const char texture1[] = "tire.raw";          /* テクスチャファイル名 */
 
 /*
 ** 初期化
@@ -115,10 +116,9 @@ static void scene(void)
   //glDisable(GL_ALPHA_TEST);
 }
 
-
-/*************************
+/****************************
 ** GLUT のコールバック関数 **
-*************************/
+****************************/
 
 /* トラックボール処理用関数の宣言 */
 #include "trackball.h"
@@ -132,6 +132,7 @@ static void display(void)
   static int frame = 0;                      /* フレーム数　　　　　　　 */
   double t = (double)frame / (double)FRAMES; /* 時間とともに 0→1 に変化 */
 
+  /* アニメーションのサイクルごとにフレーム数をリセットする */
   if (++frame >= FRAMES) frame = 0;
 
   /* テクスチャ行列の設定 */
@@ -145,7 +146,6 @@ static void display(void)
 
   /* トラックボール処理による回転 */
   glMultMatrixd(trackballRotation());
-
 
   /* モデルビュー変換行列の設定 */
   glMatrixMode(GL_MODELVIEW);

@@ -1,4 +1,5 @@
 ﻿#if defined(__APPLE__) || defined(MACOSX)
+#  define GL_SILENCE_DEPRECATION
 #  include <GLUT/glut.h>
 #else
 #  include <GL/glut.h>
