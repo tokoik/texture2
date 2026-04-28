@@ -4,12 +4,12 @@
 
 このプログラムは、OpenGL における「テクスチャマッピング (Texture Mapping)」の基礎を学ぶための、学生向けのサンプルプログラムです。本プログラムは、以下のブログ記事の解説に沿って学習を進めるための雛形として提供されています。
 
-- [テクスチャ第６回：投影マッピング](https://tokoik.github.io/blog/opengl/%E3%83%86%E3%82%AF%E3%82%B9%E3%83%81%E3%83%A3/2004/09/20/texture.html)
+- [テクスチャ:第６回 投影マッピング](https://tokoik.github.io/blog/opengl/%E3%83%86%E3%82%AF%E3%82%B9%E3%83%81%E3%83%A3/2004/09/20/texture.html)
 
 今回は通常のテクスチャマッピングとは少し異なり、スライドプロジェクターやスポットライトで物体に画像を投影するようにマッピングする、**テクスチャ投影 (Projective Texture Mapping)** という手法を実装します。プログラムを実行すると、テクスチャが立方体に投影されながらアニメーションする様子を観察できます。
 
 <div style="text-align: center;">
-<img src="texture2.gif" width="256" height="256" alt="投影マッピング" />
+<img src="https://tokoik.github.io/assets/images/texture2.gif" width="256" height="256" alt="投影マッピング" />
 </div>
 
 ## 2. ビルド方法
