@@ -93,7 +93,7 @@ cd build
 
 ### 3.2 操作方法
 
-- **マウスの左ボタンでドラッグ**: 画面内のオブジェクト（または投影されるテクスチャ）を３次元的に回転させることができます。
+- **マウスの左ボタンでドラッグ**: 投影されるテクスチャの向き（仮想的なプロジェクターの方向）を３次元的に回転させることができます。（以前は物体自体を回転させていましたが、今回はテクスチャを回転させるように変更されています）
 
 - **キーボードの q, Q または ESC キー**: プログラムを終了します。
 
@@ -117,20 +117,24 @@ cd build
 
 - この段階ではまだ画像は正しく貼り付けられず、3D 空間の座標系とテクスチャの座標系が直接結びついた状態になります。
 
-### 4.3 テクスチャ行列によるプロジェクターのシミュレーション (`display` 関数)
+### 4.3 モデルビュー行列の設定（カメラと物体の配置）
 
-- `display()` 関数内で [`glMatrixMode(GL_TEXTURE)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMatrixMode.xml) を呼び出し、「テクスチャ行列」を操作するモードに切り替えます。テクスチャ行列を使うと、指定したテクスチャ座標に対して移動や回転などの変換をかけることができます。
+- `display()` 関数の前半で [`glMatrixMode(GL_MODELVIEW)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMatrixMode.xml) を呼び出し、通常の空間（カメラや物体）の設定を行います。
+
+- [`gluLookAt()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml) を用いて、箱を斜め上 `(1.5, 2.0, 2.5)` の位置から原点に向かって見下ろすようにカメラ（視点）を配置しています。
+
+- 今回のプログラムでは、モデルビュー行列に対するトラックボール（マウス）の回転処理はコメントアウトされており、物体（箱）自体は空間内に固定された状態になっています。
+
+### 4.4 テクスチャ行列によるプロジェクターのシミュレーション
+
+- 次に、[`glMatrixMode(GL_TEXTURE)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMatrixMode.xml) を呼び出して「テクスチャ行列」を操作するモードに切り替えます。テクスチャ行列を使うと、指定したテクスチャ座標に対して移動や回転などの変換をかけることができます。
 
 - ここで、カメラの位置を決める [`gluLookAt()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml) と、遠近感を計算する透視投影の [`gluPerspective()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/gluPerspective.xml) を呼び出します。これにより、「仮想的なプロジェクター」を 3D 空間に配置し、そこから画像を投影する計算が行われます。
 
+- さらに、マウス操作による `trackballRotation()` をテクスチャ行列に適用することで、マウスのドラッグ操作で「プロジェクターから投影されるテクスチャの向き」を回転させることができるようになっています。
+
 - 投影計算の結果として得られる座標は -1.0 から 1.0 の範囲になりますが、テクスチャ画像は 0.0 から 1.0 の範囲で扱う必要があるため、[`glScaled(0.5, 0.5, 1.0)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glScale.xml) と [`glTranslated(0.5, 0.5, 0.0)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glTranslate.xml) を使って座標の範囲を半分に縮小し、ずらす処理を行っています。
 
-- さらに時間経過 (`t`) に応じた [`glRotated()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml) による回転を加えることで、投影される画像が回転アニメーションするようになります。
+- また、時間経過 (`t`) に応じた [`glRotated()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml) による回転も加わっており、投影される画像が回転アニメーションする様子も観察できます。
 
-### 4.4 モデルビュー行列の切り替えと描画 (`display` 関数)
-   
-- テクスチャの設定が終わったら、[`glMatrixMode(GL_MODELVIEW)`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glMatrixMode.xml) を呼び出して、通常の物体を描画するための行列モードに戻します。
-
-- [`gluLookAt()`](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml) で画面を見る実際のカメラ（視点）を設定し、`scene()` 関数を呼び出して物体（箱）を描画します。
-
-- この結果、4.3 で設定された「テクスチャプロジェクター」から投影された模様が、箱の表面に浮かび上がって画面に表示されます。
+- これらの設定が終わった後、`scene()` 関数を呼び出して物体（箱）を描画します。この結果、設定された「テクスチャプロジェクター」から投影された模様が、箱の表面に浮かび上がって画面に表示されます。
