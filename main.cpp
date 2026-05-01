@@ -68,7 +68,8 @@ static void init(void)
   /* テクスチャ環境 */
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-#if 0 /* テクスチャに別の色を混合する場合は 1 にしてください */
+#if 0
+  /* 混合する色の設定 */
   static const GLfloat blend[] = { 0.0, 1.0, 0.0, 1.0 };
   glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blend);
 #endif
