@@ -53,8 +53,8 @@ static void init(void)
     GL_RGBA, GL_UNSIGNED_BYTE, texture);
 
   /* テクスチャを拡大・縮小する方法の指定 */
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
   /* テクスチャの繰り返し方法の指定 */
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -65,12 +65,12 @@ static void init(void)
 
 #if 0
   /* 混合する色の設定 */
-  static const GLfloat blend[] = { 0.0, 1.0, 0.0, 1.0 };
+  static const GLfloat blend[] = { 0.0f, 1.0f, 0.0f, 1.0f };
   glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blend);
 #endif
 
   /* アルファテストの判別関数 */
-  glAlphaFunc(GL_GREATER, 0.5);
+  glAlphaFunc(GL_GREATER, 0.5f);
 
   /* 初期設定 */
   glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
@@ -94,7 +94,7 @@ static void init(void)
 */
 static void scene(void)
 {
-  static const GLfloat color[] = { 1.0, 1.0, 1.0, 1.0 };  /* 材質 (色) */
+  static const GLfloat color[] = { 1.0f, 1.0f, 1.0f, 1.0f };   /* 材質 (色) */
 
   /* 材質の設定 */
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
@@ -156,7 +156,7 @@ static void display(void)
   glScaled(0.5, 0.5, 1.0);
 
   /* テクスチャ行列に透視変換行列と視野変換行列を掛ける */
-  gluPerspective(60.0, 1.0, 1.0, 100.0);
+  gluPerspective(60.0, 1.0, 0.1, 10.0);
   gluLookAt(0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
   /* トラックボール処理でテクスチャを回転 */
@@ -185,7 +185,7 @@ static void resize(int w, int h)
 
   /* 透視変換行列の初期化 */
   glLoadIdentity();
-  gluPerspective(60.0, (double)w / (double)h, 1.0, 100.0);
+  gluPerspective(60.0, (double)w / (double)h, 0.1, 10.0);
 }
 
 static void idle(void)
