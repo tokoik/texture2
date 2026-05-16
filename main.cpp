@@ -210,8 +210,8 @@ static void mouse(int button, int state, int x, int y)
       break;
     }
     break;
-    default:
-      break;
+  default:
+    break;
   }
 }
 
@@ -237,7 +237,7 @@ static void keyboard(unsigned char key, int x, int y)
 /*
 ** メインプログラム
 */
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
