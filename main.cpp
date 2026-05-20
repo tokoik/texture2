@@ -2,7 +2,7 @@
 #  define GL_SILENCE_DEPRECATION
 #  include <GLUT/glut.h>
 #else
-#  if defined(_WIN32)
+#  if defined(_MSC_VER)
 //#    pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 #    define _USE_MATH_DEFINES
 #    define _CRT_SECURE_NO_WARNINGS
