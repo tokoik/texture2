@@ -8,7 +8,7 @@
 
 今回は通常のテクスチャマッピングとは少し異なり、スライドプロジェクターやスポットライトで物体に画像を投影するようにマッピングする、**テクスチャ投影 (Projective Texture Mapping)** という手法を実装します。プログラムを実行すると、テクスチャが立方体に投影されながらアニメーションする様子を観察できます。
 
-![投影マッピング](https://tokoik.github.io/blog/assets/images/texture2.webp)
+![投影マッピング](https://tokoik.github.io/blog/assets/images/texture/texture2.webp)
 
 ## 2. ビルド方法
 
